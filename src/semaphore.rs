@@ -32,7 +32,7 @@ impl Semaphore {
         // Boundary second should be moved forward if it's outdated
         if timestamp >= self.boundary_second {
             self.boundary_second = timestamp + self.per_period;
-            self.current_block_access = 0;
+            self.current_block_access = 1;
             return None;
         }
 
