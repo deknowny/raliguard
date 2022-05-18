@@ -1,6 +1,9 @@
 # Rate limit guard
 Lazy rate limit semaphore implementation to control your asynchronous code frequency execution
 
+***
+__Documentation__: ![lib.rs/raliguard](lib.rs/raliguard)
+
 ## Overview
 ```rust
 use std::{thread, sync, time};
