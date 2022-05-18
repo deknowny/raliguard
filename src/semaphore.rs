@@ -1,6 +1,8 @@
+/// Implementation of rate limi semaphore
 use std::time::{SystemTime, UNIX_EPOCH, Duration};
 
 
+/// Use it to control execution frequency
 #[derive(Debug)]
 pub struct Semaphore {
     pub access_times: u64,
@@ -12,6 +14,26 @@ pub struct Semaphore {
 
 
 impl Semaphore {
+    /// Create a new semaphore
+    ///
+    /// # Arguments:
+    /// * `access_times` - how many times a code allowed to be executed
+    /// * `per_period` - in which period code allowed to be executed
+    ///
+    /// # Returns:
+    /// Duration you need to sleep
+    ///
+    /// # Examples:
+    ///
+    /// ```rust
+    /// use raliguard::Semaphore;
+    ///
+    /// // 5 executions per 1 second
+    /// let semaphore = Semaphore::new(5, 1)
+    ///
+    /// // 2 executions per 7 seconds
+    /// let semaphore = Semaphore::new(2, 7)
+    /// ```
     pub fn new(access_times: u64, per_period: u64) -> Self {
         Semaphore {
             access_times,
@@ -21,6 +43,10 @@ impl Semaphore {
         }
     }
 
+    /// Calculate delay the task/thread should sleep
+    ///
+    /// Use with `std::sync::Arc` and `std::sync::Mutex`
+    /// (or `tokio::sync::Mutex` in async style)
     pub fn calc_delay(&mut self) -> Option<Duration> {
         let start = SystemTime::now();
         let since_the_epoch = start
