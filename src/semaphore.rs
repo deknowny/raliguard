@@ -1,4 +1,4 @@
-use std::time::{SystemTime, UNIX_EPOCH, Duration};
+use std::time::{SystemTime, UNIX_EPOCH, Duration, Instant};
 
 
 #[derive(Debug)]
@@ -12,6 +12,15 @@ pub struct Semaphore {
 
 
 impl Semaphore {
+    pub fn new(access_times: u64, per_period: u64) -> Self {
+        Semaphore {
+            access_times,
+            per_period,
+            boundary_second: 0,
+            current_block_access: 0
+        }
+    }
+
     pub fn calc_delay(&mut self) -> Option<Duration> {
         let start = SystemTime::now();
         let since_the_epoch = start
@@ -28,11 +37,11 @@ impl Semaphore {
         }
 
         self.current_block_access += 1;
-        let delay = since_the_epoch - Duration::new(timestamp, 0);
+        let delay = Duration::from_secs(self.boundary_second) - since_the_epoch;
 
         // Allowed access for current block gets it's maximum,
         // shoul move block forward
-        if self.access_times == self.current_block_access {
+        if self.current_block_access == self.access_times {
             self.boundary_second += self.per_period;
             self.current_block_access = 0;
         }
