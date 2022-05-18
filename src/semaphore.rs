@@ -29,10 +29,10 @@ impl Semaphore {
     /// use raliguard::Semaphore;
     ///
     /// // 5 executions per 1 second
-    /// let semaphore = Semaphore::new(5, 1)
+    /// let semaphore = Semaphore::new(5, 1);
     ///
     /// // 2 executions per 7 seconds
-    /// let semaphore = Semaphore::new(2, 7)
+    /// let semaphore = Semaphore::new(2, 7);
     /// ```
     pub fn new(access_times: u64, per_period: u64) -> Self {
         Semaphore {

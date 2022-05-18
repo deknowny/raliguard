@@ -41,8 +41,6 @@ for _ in 0..10 {
         *local_done_count += 1;
 
     });
-
-    thread.
 }
 
 // So sleep 3 seconds
