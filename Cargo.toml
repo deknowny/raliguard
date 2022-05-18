@@ -2,3 +2,8 @@
 name = "raliguard"
 version = "0.1.0"
 edition = "2021"
+readme = "README.md"
+description = "Lazy rate limit semaphore implementation for your asynchronous code frequency execution"
+repository = "https://github.com/deknowny/raliguard"
+homepage = "https://github.com/deknowny/raliguard"
+license-file = "LICENSE"
