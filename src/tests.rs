@@ -3,12 +3,6 @@ use std::{thread, time, sync};
 use crate::Semaphore;
 
 #[test]
-fn it_works() {
-    let result = 2 + 2;
-    assert_eq!(result, 4);
-}
-
-#[test]
 fn check_limit_not_exceeded() {
     let originl_sem = Semaphore::new(2, 1);
     let shared_sem = sync::Arc::new(
