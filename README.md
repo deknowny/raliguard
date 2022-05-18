@@ -23,21 +23,26 @@ let shared_done_count = sync::Arc::new(sync::Mutex::new(0));
 for _ in 0..10 {
     let cloned_sem = shared_sem.clone();
     let cloned_done_state = shared_done_count.clone();
-    thread::spawn(move || {
+    let thread = thread::spawn(move || {
         let mut local_sem = cloned_sem.lock().unwrap();
 
+        // Get required delay
         let calculated_delay = local_sem.calc_delay();
         drop(local_sem);
 
+        // If delay exists, sleep it
         if let Some(delay) = calculated_delay {
             dbg!(&delay);
             thread::sleep(delay);
         }
 
+        // Mark the thread is done
         let mut local_done_count = cloned_done_state.lock().unwrap();
         *local_done_count += 1;
 
     });
+
+    thread.
 }
 
 // So sleep 3 seconds
