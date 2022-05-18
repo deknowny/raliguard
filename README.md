@@ -9,7 +9,7 @@ use raliguard::Semaphore;
 
 
 // Create a semaphore with restriction `5 tasks per 1 second`
-let originl_sem = Semaphore::new(5, 1);
+let originl_sem = Semaphore::new(5, time::Duration::from_secs(1));
 
 // Make it sharable between treads (or you can share between tasks)
 let shared_sem = sync::Arc::new(
@@ -50,6 +50,7 @@ let current_done = cloned_done_count.lock().unwrap();
 
 // And then maximum 5 threads should be completed
 // after 1 second sleeping
+// (<= for clocks infelicity)
 assert_eq!(*current_done <= 5, true);
 ```
 

@@ -4,7 +4,7 @@ use crate::Semaphore;
 
 #[test]
 fn check_limit_not_exceeded() {
-    let originl_sem = Semaphore::new(3, 1);
+    let originl_sem = Semaphore::new(3, time::Duration::from_secs(1));
     let shared_sem = sync::Arc::new(
         sync::Mutex::new(originl_sem)
     );
@@ -31,7 +31,7 @@ fn check_limit_not_exceeded() {
         });
     }
 
-    let one_second = time::Duration::new(1, 0);
+    let one_second = time::Duration::from_secs(1);
 
     // Maximum 3 threads should be completed
     thread::sleep(one_second);
