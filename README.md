@@ -46,7 +46,7 @@ for _ in 0..10 {
     });
 }
 
-// So sleep 3 seconds
+// So sleep 1 second
 thread::sleep(time::Duration::new(1, 0));
 let cloned_done_count = shared_done_count.clone();
 let current_done = cloned_done_count.lock().unwrap();
