@@ -1,0 +1,35 @@
+name: Publish to crates.io
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    name: Publish crate to crates.io
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout to the repo
+
+      - uses: actions-rs/toolchain@v1
+        name: Install Rust
+        with:
+          toolchain: stable
+
+      - uses: actions-rs/cargo@v1
+        name: Check everything builds okay
+        with:
+          command: package
+          args: --dry-run
+
+      - uses: actions-rs/cargo@v1
+        name: Login to owner account
+        with:
+          command: login
+          args: ${{ secrets.CREATES_IO_AUTH_TOKEN }}
+
+      - uses: actions-rs/cargo@v1
+        name: Deploy to crates.io
+        with:
+          command: publish
