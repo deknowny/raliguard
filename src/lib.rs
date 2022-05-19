@@ -1,4 +1,4 @@
-#![cfg_attr(not(debug_assertions), deny(warnings, missing_docs, clippy::all, clippy::cargo))]
+#![cfg_attr(not(debug_assertions), deny(warnings, clippy::all, clippy::cargo))]
 #![doc = include_str!("../README.md")]
 
 pub mod semaphore;
