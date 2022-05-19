@@ -1,0 +1,30 @@
+name: Unit Tests
+on: push
+
+
+jobs:
+  tests:
+    name: Test installation and functionality
+    strategy:
+      matrix:
+        platform: ["ubuntu-latest", "macos-11", "windows-2022"]
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout to the repo
+
+      - uses: actions-rs/toolchain@v1
+        name: Install Rust
+        with:
+          toolchain: stable
+
+      - uses: actions-rs/cargo@v1
+        name: Build the library in release mode
+        with:
+          command: build
+          args: --release
+
+      - uses: actions-rs/cargo@v1
+        name: Run tests
+        with:
+          command: test
