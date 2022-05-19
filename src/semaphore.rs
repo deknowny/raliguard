@@ -1,5 +1,5 @@
 /// Implementation of rate limi semaphore
-use std::time::{SystemTime, UNIX_EPOCH, Duration};
+use std::time::{Duration, Instant};
 
 
 /// Use it to control execution frequency
@@ -60,7 +60,8 @@ pub struct Semaphore {
     pub per_period: Duration,
 
     boundary: Duration,
-    current_block_access: u64
+    current_block_access: u64,
+    benchmark_stamp: Instant
 }
 
 
@@ -91,7 +92,8 @@ impl Semaphore {
             access_times,
             per_period,
             boundary: Duration::from_secs(0),
-            current_block_access: 0
+            current_block_access: 0,
+            benchmark_stamp: Instant::now(),
         }
     }
 
@@ -100,20 +102,17 @@ impl Semaphore {
     /// Use with `std::sync::Arc` and `std::sync::Mutex`
     /// (or `tokio::sync::Mutex` in async style)
     pub fn calc_delay(&mut self) -> Option<Duration> {
-        let start = SystemTime::now();
-        let since_the_epoch = start
-            .duration_since(UNIX_EPOCH)
-            .expect("Time went backwards");
+        let stamp = self.benchmark_stamp.elapsed();
 
         // Boundary second should be moved forward if it's outdated
-        if since_the_epoch >= self.boundary {
-            self.boundary = since_the_epoch + self.per_period;
+        if stamp >= self.boundary {
+            self.boundary = stamp + self.per_period;
             self.current_block_access = 1;
             return None;
         }
 
         self.current_block_access += 1;
-        let delay = self.boundary - since_the_epoch;
+        let delay = self.boundary - stamp;
 
         // Allowed access for current block gets it's maximum,
         // shoul move block forward
