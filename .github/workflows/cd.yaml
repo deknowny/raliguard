@@ -21,7 +21,6 @@ jobs:
         name: Check everything builds okay
         with:
           command: package
-          args: --dry-run
 
       - uses: actions-rs/cargo@v1
         name: Login to owner account
