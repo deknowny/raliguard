@@ -9,6 +9,8 @@ jobs:
       matrix:
         platform: ["ubuntu-latest", "macos-11", "windows-2022"]
 
+    runs-on: ${{ matrix.platform }}
+
     steps:
       - uses: actions/checkout@v2
         name: Checkout to the repo
