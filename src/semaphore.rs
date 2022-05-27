@@ -54,7 +54,7 @@ use std::time::{Duration, Instant};
 /// // after 1 second sleeping
 /// assert_eq!(*current_done <= 5, true);
 /// ```
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Semaphore {
     pub access_times: u64,
     pub per_period: Duration,
