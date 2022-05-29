@@ -1,5 +1,5 @@
 # Rate limit guard
-Lazy rate limit semaphore implementation to control your asynchronous code frequency execution
+Lazy rate limit semaphore (a.k.a fixed window algorithm without queueing) implementation to control your asynchronous code frequency execution
 
 ***
 __Documentation__: [lib.rs/raliguard](lib.rs/raliguard)
