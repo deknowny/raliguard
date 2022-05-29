@@ -11,7 +11,7 @@ fn check_limit_not_exceeded() {
 
     let shared_done_count = sync::Arc::new(sync::Mutex::new(0));
 
-    for _ in 0..10 {
+    for _ in 0..15 {
         let cloned_sem = shared_sem.clone();
         let cloned_done_state = shared_done_count.clone();
         thread::spawn(move || {
@@ -19,9 +19,9 @@ fn check_limit_not_exceeded() {
 
             let calculated_delay = local_sem.calc_delay();
             drop(local_sem);
+            dbg!(&calculated_delay);
 
             if let Some(delay) = calculated_delay {
-                dbg!(&delay);
                 thread::sleep(delay);
             }
 
@@ -31,22 +31,24 @@ fn check_limit_not_exceeded() {
         });
     }
 
-    let one_second = time::Duration::from_secs(1);
+    // Add some millis because of working freeze
+    let one_second = time::Duration::from_secs(1) + time::Duration::from_millis(50);
 
-    // Maximum 3 threads should be completed
+    // Maximum 6 threads should be completed (3 with no delay at 3 adter a second)
     thread::sleep(one_second);
     let cloned_done_count = shared_done_count.clone();
     let current_done = cloned_done_count.lock().unwrap();
 
-    assert_eq!(*current_done <= 3, true);
+    assert_eq!(*current_done, 6);
 
     // Let other thread to write there again
     drop(current_done);
 
-    // Now 9 thread should be completed, because 2 seconds passed
+    // Now 12 thread should be completed, because 2 seconds passed
+    // And another 6 threads should be completed
     thread::sleep(one_second * 2);
     let cloned_done_count = shared_done_count.clone();
     let current_done = cloned_done_count.lock().unwrap();
 
-    assert_eq!(*current_done <= 9, true);
+    assert_eq!(*current_done, 12);
 }

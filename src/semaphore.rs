@@ -53,7 +53,7 @@ use std::time::{Duration, Instant};
 /// // And then maximum 10 threads should be completed
 /// // after 1 second sleeping
 /// // (the first 5 with no delay and the another 5 after 1 second)
-/// assert_eq!(*current_done == 10, true);
+/// assert_eq!(*current_done, 10);
 /// ```
 #[derive(Debug, Clone)]
 pub struct Semaphore {
