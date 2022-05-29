@@ -1,6 +1,6 @@
 [package]
 name = "raliguard"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 readme = "README.md"
 description = "Lazy rate limit semaphore implementation for your asynchronous code frequency execution"
