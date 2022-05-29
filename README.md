@@ -22,8 +22,8 @@ let shared_sem = sync::Arc::new(
 // This is a counter that increments when a thread completed
 let shared_done_count = sync::Arc::new(sync::Mutex::new(0));
 
-// Spawn 10 threads
-for _ in 0..10 {
+// Spawn 15 threads
+for _ in 0..15 {
     let cloned_sem = shared_sem.clone();
     let cloned_done_state = shared_done_count.clone();
     let thread = thread::spawn(move || {
@@ -46,15 +46,15 @@ for _ in 0..10 {
     });
 }
 
-// So sleep 1 second
-thread::sleep(time::Duration::new(1, 0));
+// So sleep 1 second (add some millis to let threads complete incrementing)
+thread::sleep(time::Duration::from_secs(1) + time::Duration::from_millis(50));
 let cloned_done_count = shared_done_count.clone();
 let current_done = cloned_done_count.lock().unwrap();
 
-// And then maximum 5 threads should be completed
+// And then maximum 10 threads should be completed
 // after 1 second sleeping
-// (<= for clocks infelicity)
-assert_eq!(*current_done <= 5, true);
+// (the first 5 with no delay and the another 5 after 1 second)
+assert_eq!(*current_done, 10);
 ```
 
 ## Features
