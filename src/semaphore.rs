@@ -1,7 +1,6 @@
 /// Implementation of rate limi semaphore
 use std::time::{Duration, Instant};
 
-
 /// Use it to control execution frequency
 ///
 /// # Examples:
@@ -62,9 +61,8 @@ pub struct Semaphore {
 
     boundary: Duration,
     current_block_access: u64,
-    benchmark_stamp: Instant
+    benchmark_stamp: Instant,
 }
-
 
 impl Semaphore {
     /// Create a new semaphore
@@ -108,8 +106,7 @@ impl Semaphore {
         // Boundary second should be moved forward if it's outdated
         if stamp >= self.boundary {
             self.boundary = stamp + self.per_period;
-            self.current_block_access = 1;
-            return None;
+            self.current_block_access = 0;
         }
 
         // Add new hit
