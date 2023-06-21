@@ -14,7 +14,7 @@ use raliguard::Semaphore;
 // Create a semaphore with restriction `5 tasks per 1 second`
 let originl_sem = Semaphore::new(5, time::Duration::from_secs(1));
 
-// Make it sharable between treads (or you can share between tasks)
+// Make it sharable between threads (or you can share between tasks)
 let shared_sem = sync::Arc::new(
     sync::Mutex::new(originl_sem)
 );
